@@ -1,4 +1,4 @@
-import { App } from './App.js';
+import { App } from './app.js';
 
 // Start the app when DOM is ready
 if (document.readyState === 'loading') {
