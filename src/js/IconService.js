@@ -1,3 +1,5 @@
+import { CONFIG } from './constants.js';
+
 export class IconService {
     /**
      * Fetches metadata and then all SVG contents.
@@ -5,8 +7,10 @@ export class IconService {
      */
     static async fetchLibrary() {
         try {
+            const getPath = (p) => CONFIG.BASE_PATH ? `${CONFIG.BASE_PATH}/${p}`.replace('//', '/') : p;
+
             // Fetch metadata relative to the project root
-            const metadataUrl = 'icons/.metadata.json';
+            const metadataUrl = getPath('icons/.metadata.json');
             console.log(`[IconService] Fetching metadata: ${metadataUrl}`);
             
             const response = await fetch(metadataUrl);
@@ -18,7 +22,7 @@ export class IconService {
 
             const fetchPromises = metadata.map(async (item) => {
                 try {
-                    const svgRes = await fetch(item.path);
+                    const svgRes = await fetch(getPath(item.path));
                     if (!svgRes.ok) return null;
                     const markup = await svgRes.text();
                     return { ...item, markup };
