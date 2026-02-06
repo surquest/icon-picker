@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Material Icon Library</title>
+    
+    <!-- Material Web Components & Fonts -->
+    <script type="importmap">
+        {
+          "imports": {
+            "@material/web/": "https://esm.run/@material/web/"
+          }
+        }
+    </script>
+    <script type="module">
+        import '@material/web/all.js';
+        import {styles as typescaleStyles} from '@material/web/typography/md-typescale-styles.js';
+        document.adoptedStyleSheets.push(typescaleStyles.styleSheet);
+    </script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div id="loading-overlay">
+        <md-circular-progress indeterminate></md-circular-progress>
+        <p class="mt-4 text-sm font-medium">Loading Icon Metadata...</p>
+    </div>
+
+    <header>
+        <div class="flex items-center gap-4 w-full">
+            <span class="text-xl font-medium hidden md:block">IconLib</span>
+            <md-filled-text-field
+                id="search-field"
+                placeholder="Search icons..."
+                no-asterisk>
+                <md-icon slot="leading-icon">search</md-icon>
+            </md-filled-text-field>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <div class="content-area">
+            <section class="icon-grid" id="icon-grid">
+                <!-- Icons injected here -->
+            </section>
+        </div>
+
+        <aside class="sidebar" id="sidebar">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-bold" id="sidebar-title">Edit Icon</h2>
+                <md-icon-button id="close-sidebar">
+                    <md-icon>close</md-icon>
+                </md-icon-button>
+            </div>
+
+            <div class="preview-container" id="preview-area">
+                <!-- Preview SVG here -->
+            </div>
+
+            <div class="flex flex-col gap-6">
+                <div>
+                    <div class="flex justify-between items-center mb-2">
+                        <label class="text-sm font-medium">Size</label>
+                        <span class="text-xs font-mono bg-gray-100 px-2 py-1 rounded" id="size-label">120px</span>
+                    </div>
+                    <md-slider 
+                        id="size-slider"
+                        min="16" 
+                        max="512" 
+                        value="120">
+                    </md-slider>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium mb-3">Color Scheme</label>
+                    <div class="flex flex-wrap gap-3" id="color-picker">
+                        <!-- Colors injected here -->
+                    </div>
+                </div>
+
+                <div class="mt-4 flex flex-col gap-3">
+                    <md-filled-button id="download-svg">
+                        <md-icon slot="icon">file_download</md-icon>
+                        Export SVG
+                    </md-filled-button>
+                    <md-outlined-button id="download-png">
+                        <md-icon slot="icon">image</md-icon>
+                        Export PNG
+                    </md-outlined-button>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <canvas id="export-canvas" class="hidden-canvas"></canvas>
+
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>

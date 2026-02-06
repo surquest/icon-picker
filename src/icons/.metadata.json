@@ -1,0 +1,26 @@
+
+[{
+	"name": "home",
+	"path": "./icons/home.svg",
+	"tags": ["home","house"]
+},
+{
+	"name": "edit",
+	"path": "./icons/edit.svg",
+	"tags": ["edit","modify"]
+},
+{
+	"name": "search",
+	"path": "./icons/search.svg",
+	"tags": ["search","find","magnify"]
+},
+{
+	"name": "settings",
+	"path": "./icons/settings.svg",
+	"tags": ["settings","gear","preferences"]
+},
+{
+	"name": "user",
+	"path": "./icons/user.svg",
+	"tags": ["user","person","account"]
+}]
