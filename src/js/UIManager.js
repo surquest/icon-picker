@@ -9,30 +9,92 @@ export class UIManager {
             previewArea: document.getElementById('preview-area'),
             colorPicker: document.getElementById('color-picker'),
             sizeSlider: document.getElementById('size-slider'),
+            sizeInput: document.getElementById('size-input'),
             sizeLabel: document.getElementById('size-label'),
             sidebarTitle: document.getElementById('sidebar-title'),
             loadingOverlay: document.getElementById('loading-overlay'),
             closeSidebarBtn: document.getElementById('close-sidebar'),
+            
+            customColorPicker: document.getElementById('custom-color-picker'),
+            customColorInput: document.getElementById('custom-color-input'),
+
             downloadSvgBtn: document.getElementById('download-svg'),
             downloadPngBtn: document.getElementById('download-png'),
-            exportCanvas: document.getElementById('export-canvas')
+            exportCanvas: document.getElementById('export-canvas'),
+            codePreview: document.getElementById('code-preview'),
+            copyCodeBtn: document.getElementById('copy-code-btn'),
+            
+            // Bulk Actions
+            bulkActions: document.getElementById('bulk-actions'),
+            bulkDownloadBtn: document.getElementById('bulk-download-btn'),
+            bulkDialog: document.getElementById('bulk-download-dialog'),
+            bulkCount: document.getElementById('bulk-count'),
+            bulkFormatTabs: document.getElementById('bulk-format-tabs'),
+            bulkSizeSlider: document.getElementById('bulk-size-slider'),
+            bulkSizeInput: document.getElementById('bulk-size-input'),
+            bulkSizeLabel: document.getElementById('bulk-size-label'),
+            bulkColorPicker: document.getElementById('bulk-color-picker'),
+            
+            bulkCustomColorPicker: document.getElementById('bulk-custom-color-picker'),
+            bulkCustomColorInput: document.getElementById('bulk-custom-color-input'),
+            
+            confirmBulkDownload: document.getElementById('confirm-bulk-download'),
+
+            // CSS Download
+            downloadCssBtn: document.getElementById('download-css-btn'),
+            cssDialog: document.getElementById('css-tutorial-dialog'),
+            confirmCssDownload: document.getElementById('confirm-css-download'),
+
+            // Selection Controls
+            selectAllBtn: document.getElementById('select-all-btn'),
+            deselectAllBtn: document.getElementById('deselect-all-btn')
         };
     }
 
-    renderGrid(icons) {
+    renderGrid(icons, selectedIcons = new Set()) {
         this.elements.grid.innerHTML = icons.map(icon => {
             // Create a temporary stripped version for the card preview
             const strippedMarkup = IconUtils.getProcessedSVG(icon.markup, 48, '#555');
+            const isSelected = selectedIcons.has(icon.name);
             
             return `
-                <md-elevated-card class="icon-card" data-id="${icon.name}">
-                    <div class="mb-4">
+                <md-elevated-card class="icon-card ${isSelected ? 'selected' : ''}" data-id="${icon.name}">
+                    <div class="selection-checkbox" data-action="toggle-select">
+                        <md-checkbox touch-target="wrapper" ${isSelected ? 'checked' : ''}></md-checkbox>
+                    </div>
+                    <div class="mb-4 pointer-events-none">
                         ${strippedMarkup}
                     </div>
-                    <div class="text-sm font-medium text-center truncate w-full">${icon.name}</div>
+                    <div class="text-sm font-medium text-center truncate w-full pointer-events-none">${icon.name}</div>
                 </md-elevated-card>
             `;
         }).join('');
+    }
+
+    renderBulkColors(colors, activeColor) {
+        if (!this.elements.bulkColorPicker) return;
+        this.elements.bulkColorPicker.innerHTML = colors.map(color => `
+            <div class="color-swatch ${color === activeColor ? 'active' : ''}" 
+                 style="background: ${color}" 
+                 data-color="${color}"></div>
+        `).join('');
+    }
+
+    updateBulkActiveSwatch(activeColor) {
+        if (!this.elements.bulkColorPicker) return;
+        const swatches = this.elements.bulkColorPicker.querySelectorAll('.color-swatch');
+        swatches.forEach(s => {
+            s.classList.toggle('active', s.dataset.color === activeColor);
+        });
+    }
+
+    toggleBulkActions(count) {
+        if (count > 0) {
+            this.elements.bulkActions.classList.remove('hidden');
+            this.elements.bulkCount.textContent = count;
+        } else {
+            this.elements.bulkActions.classList.add('hidden');
+        }
     }
 
     renderColors(colors, activeColor) {
@@ -53,14 +115,25 @@ export class UIManager {
     updatePreview(markup, size, color) {
         if (!markup) {
             this.elements.previewArea.innerHTML = '';
+            this.elements.codePreview.textContent = '';
             return;
         }
         const processed = IconUtils.getProcessedSVG(markup, size, color);
         this.elements.previewArea.innerHTML = processed;
+        this.elements.codePreview.textContent = processed;
+    }
+
+    setCopiedFeedback() {
+        const icon = this.elements.copyCodeBtn.querySelector('md-icon');
+        const original = icon.textContent;
+        icon.textContent = 'check';
+        setTimeout(() => icon.textContent = 'content_copy', 2000);
     }
 
     updateSizeLabel(size) {
         this.elements.sizeLabel.textContent = `${size}px`;
+        if (this.elements.sizeSlider) this.elements.sizeSlider.value = size;
+        if (this.elements.sizeInput) this.elements.sizeInput.value = size;
     }
 
     openSidebar(iconName) {

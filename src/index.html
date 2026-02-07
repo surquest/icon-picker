@@ -23,7 +23,8 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" rel="stylesheet">
     
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <link rel="stylesheet" href="styles/main.css">
 </head>
 <body>
 
@@ -34,13 +35,28 @@
 
     <header>
         <div class="flex items-center gap-4 w-full">
-            <span class="text-xl font-medium hidden md:block">IconLib</span>
+            <md-icon slot="photo-library">photo_library</md-icon>
+            <h1 class="text-2xl font-bold">Icon Library</h1>
             <md-filled-text-field
                 id="search-field"
                 placeholder="Search icons..."
                 no-asterisk>
                 <md-icon slot="leading-icon">search</md-icon>
             </md-filled-text-field>
+
+            <div class="flex gap-1" id="selection-controls">
+                <md-icon-button id="select-all-btn" title="Select All">
+                    <md-icon>select_all</md-icon>
+                </md-icon-button>
+                <md-icon-button id="deselect-all-btn" title="Deselect All">
+                    <md-icon>deselect</md-icon>
+                </md-icon-button>
+            </div>
+            
+            <md-outlined-button id="download-css-btn" class="hidden md:inline-flex">
+                <md-icon slot="icon">css</md-icon>
+                Get CSS
+            </md-outlined-button>
         </div>
     </header>
 
@@ -64,23 +80,27 @@
             </div>
 
             <div class="flex flex-col gap-6">
+                <!-- Size -->
                 <div>
                     <div class="flex justify-between items-center mb-2">
-                        <label class="text-sm font-medium">Size</label>
-                        <span class="text-xs font-mono bg-gray-100 px-2 py-1 rounded" id="size-label">120px</span>
+                        <label class="text-sm font-medium text-gray-600">Size</label>
+                        <span class="text-sm font-bold" id="size-label">120px</span>
                     </div>
-                    <md-slider 
-                        id="size-slider"
-                        min="16" 
-                        max="512" 
-                        value="120">
-                    </md-slider>
+                    <div class="flex items-center">
+                        <input type="number" id="size-input" value="120" min="16" max="512" class="w-20 h-10 px-2 border border-gray-300 rounded text-center">
+                        <md-slider id="size-slider" min="16" max="512" value="120" labeled class="flex-1"></md-slider>
+                    </div>
                 </div>
 
+                <!-- Color -->
                 <div>
-                    <label class="block text-sm font-medium mb-3">Color Scheme</label>
-                    <div class="flex flex-wrap gap-3" id="color-picker">
-                        <!-- Colors injected here -->
+                    <label class="text-sm font-medium text-gray-600 mb-2 block">Color</label>
+                    <div class="flex gap-2 flex-wrap mb-3" id="color-picker">
+                        <!-- Colors injected -->
+                    </div>
+                    <div class="flex gap-2">
+                        <input type="color" id="custom-color-picker" class="w-10 h-10 p-1 rounded cursor-pointer border border-gray-300" value="#000000">
+                        <input type="text" id="custom-color-input" class="flex-1 h-10 px-3 border border-gray-300 rounded uppercase font-mono" value="#000000" placeholder="#000000">
                     </div>
                 </div>
 
@@ -94,9 +114,100 @@
                         Export PNG
                     </md-outlined-button>
                 </div>
+
+                <div>
+                    <div class="flex justify-between items-center mb-2">
+                        <label class="text-sm font-medium">SVG Code</label>
+                    </div>
+
+                    <div class="relative code-preview-wrapper">
+                        <pre id="code-preview" class="p-3 bg-gray-100 rounded text-xs font-mono text-gray-700 whitespace-pre-wrap break-all overflow-y-auto max-h-32 border border-gray-200 select-all"></pre>
+
+                        <md-icon-button id="copy-code-btn" title="Copy to clipboard" class="copy-code-btn" aria-label="Copy SVG code">
+                            <md-icon>content_copy</md-icon>
+                        </md-icon-button>
+                    </div>
+                </div>
             </div>
         </aside>
     </div>
+
+    <!-- Bulk Actions FAB -->
+    <div id="bulk-actions" class="fixed bottom-6 right-6 z-50 hidden transition-transform duration-300">
+        <md-fab id="bulk-download-btn" label="Download Selected" variant="primary">
+            <md-icon slot="icon">download</md-icon>
+        </md-fab>
+    </div>
+
+    <!-- Bulk Download Dialog -->
+    <md-dialog id="bulk-download-dialog">
+        <div slot="headline">Download Selected Icons</div>
+        <form slot="content" id="bulk-download-form" method="dialog" class="w-[400px]">
+            <div class="flex flex-col gap-6 pt-2">
+                <p class="text-gray-600">Selected: <strong id="bulk-count">0</strong> icons</p>
+                
+                <div>
+                    <label class="block text-sm font-medium mb-2 text-gray-600">Format</label>
+                    <md-tabs id="bulk-format-tabs">
+                        <md-primary-tab active id="tab-svg">SVG</md-primary-tab>
+                        <md-primary-tab id="tab-png">PNG</md-primary-tab>
+                    </md-tabs>
+                </div>
+
+                <div>
+                    <div class="flex justify-between items-center mb-2">
+                        <label class="text-sm font-medium text-gray-600">Size</label>
+                        <span class="text-sm font-bold" id="bulk-size-label">120px</span>
+                    </div>
+                    <div class="flex items-center">
+                        <input type="number" id="bulk-size-input" value="120" min="16" max="512" class="w-20 h-10 px-2 border border-gray-300 rounded text-center">
+                        <md-slider id="bulk-size-slider" min="16" max="512" value="120" labeled class="flex-1"></md-slider>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium mb-2 text-gray-600">Color</label>
+                    <div class="flex gap-2 flex-wrap mb-3" id="bulk-color-picker">
+                        <!-- Injected via JS -->
+                    </div>
+                    <div class="flex gap-2">
+                        <input type="color" id="bulk-custom-color-picker" class="w-10 h-10 p-1 rounded cursor-pointer border border-gray-300" value="#000000">
+                        <input type="text" id="bulk-custom-color-input" class="flex-1 h-10 px-3 border border-gray-300 rounded uppercase font-mono" value="#000000" placeholder="#000000">
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div slot="actions">
+            <md-text-button form="bulk-download-form" value="cancel">Cancel</md-text-button>
+            <md-filled-button id="confirm-bulk-download">Download Zip</md-filled-button>
+        </div>
+    </md-dialog>
+
+    <!-- CSS Tutorial Dialog -->
+    <md-dialog id="css-tutorial-dialog">
+        <div slot="headline">Using Icon CSS</div>
+        <div slot="content" class="w-full max-w-[500px]">
+            <p class="mb-4 text-gray-600">Download a single CSS file containing all icons to use in your project.</p>
+            
+            <h3 class="font-bold text-sm mb-2">1. Include the CSS</h3>
+            <div class="bg-gray-100 p-3 rounded mb-4 font-mono text-xs overflow-x-auto text-gray-700 whitespace-nowrap">
+                &lt;link rel="stylesheet" href="icons.css"&gt;
+            </div>
+
+            <h3 class="font-bold text-sm mb-2">2. Use in HTML</h3>
+            <div class="bg-gray-100 p-3 rounded mb-4 font-mono text-xs overflow-x-auto text-gray-700 whitespace-nowrap">
+                &lt;span class="icon icon-home"&gt;&lt;/span&gt;
+            </div>
+            
+            <p class="text-sm text-gray-500 italic">
+                Note: Icons will inherit the current text color via <code>currentColor</code>.
+            </p>
+        </div>
+        <div slot="actions">
+            <md-text-button value="cancel">Cancel</md-text-button>
+            <md-filled-button id="confirm-css-download">Download CSS</md-filled-button>
+        </div>
+    </md-dialog>
 
     <canvas id="export-canvas" class="hidden-canvas"></canvas>
 

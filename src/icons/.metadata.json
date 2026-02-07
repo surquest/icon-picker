@@ -23,4 +23,15 @@
 	"name": "user",
 	"path": "./icons/user.svg",
 	"tags": ["user","person","account"]
-}]
+}, 
+{
+	"name": "cart",
+	"path": "./icons/cart.svg",
+	"tags": ["cart","shopping","basket"]
+},
+{
+	"name": "library",
+	"path": "./icons/library.svg",
+	"tags": ["library","books","collection"]
+}
+]
