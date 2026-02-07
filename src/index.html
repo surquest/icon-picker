@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Browse, customize, and download Material Design icons as SVG or PNG. Free icon picker tool.">
     <title>Material Icon Library</title>
     
     <!-- Material Web Components & Fonts -->
@@ -29,48 +30,49 @@
 <body>
 
     <div id="loading-overlay">
-        <md-circular-progress indeterminate></md-circular-progress>
+        <md-circular-progress indeterminate aria-label="Loading"></md-circular-progress>
         <p class="mt-4 text-sm font-medium">Loading Icon Metadata...</p>
     </div>
 
     <header>
         <div class="flex items-center gap-4 w-full">
-            <md-icon slot="photo-library">photo_library</md-icon>
-            <h1 class="text-2xl font-bold">Icon Library</h1>
+            <md-icon slot="photo-library" aria-hidden="true">photo_library</md-icon>
+            <h1 class="text-2xl font-bold">Icons</h1>
             <md-filled-text-field
                 id="search-field"
                 placeholder="Search icons..."
+                label="Search icons"
                 no-asterisk>
-                <md-icon slot="leading-icon">search</md-icon>
+                <md-icon slot="leading-icon" aria-hidden="true">search</md-icon>
             </md-filled-text-field>
 
             <div class="flex gap-1" id="selection-controls">
-                <md-icon-button id="select-all-btn" title="Select All">
+                <md-icon-button id="select-all-btn" title="Select All" aria-label="Select All">
                     <md-icon>select_all</md-icon>
                 </md-icon-button>
-                <md-icon-button id="deselect-all-btn" title="Deselect All">
+                <md-icon-button id="deselect-all-btn" title="Deselect All" aria-label="Deselect All">
                     <md-icon>deselect</md-icon>
                 </md-icon-button>
             </div>
             
             <md-outlined-button id="download-css-btn" class="hidden md:inline-flex">
-                <md-icon slot="icon">css</md-icon>
+                <md-icon slot="icon" aria-hidden="true">css</md-icon>
                 Get CSS
             </md-outlined-button>
         </div>
     </header>
 
     <div class="main-container">
-        <div class="content-area">
+        <main class="content-area">
             <section class="icon-grid" id="icon-grid">
                 <!-- Icons injected here -->
             </section>
-        </div>
+        </main>
 
         <aside class="sidebar" id="sidebar">
             <div class="flex justify-between items-center mb-6">
                 <h2 class="text-xl font-bold" id="sidebar-title">Edit Icon</h2>
-                <md-icon-button id="close-sidebar">
+                <md-icon-button id="close-sidebar" aria-label="Close sidebar">
                     <md-icon>close</md-icon>
                 </md-icon-button>
             </div>
@@ -83,12 +85,12 @@
                 <!-- Size -->
                 <div>
                     <div class="flex justify-between items-center mb-2">
-                        <label class="text-sm font-medium text-gray-600">Size</label>
+                        <label class="text-sm font-medium text-gray-600" for="size-input">Size</label>
                         <span class="text-sm font-bold" id="size-label">120px</span>
                     </div>
                     <div class="flex items-center">
-                        <input type="number" id="size-input" value="120" min="16" max="512" class="w-20 h-10 px-2 border border-gray-300 rounded text-center">
-                        <md-slider id="size-slider" min="16" max="512" value="120" labeled class="flex-1"></md-slider>
+                        <input aria-label="Icon size" type="number" id="size-input" value="120" min="16" max="512" class="w-20 h-10 px-2 border border-gray-300 rounded text-center">
+                        <md-slider aria-label="Adjust icon size" id="size-slider" min="16" max="512" value="120" labeled class="flex-1"></md-slider>
                     </div>
                 </div>
 
@@ -99,8 +101,8 @@
                         <!-- Colors injected -->
                     </div>
                     <div class="flex gap-2">
-                        <input type="color" id="custom-color-picker" class="w-10 h-10 p-1 rounded cursor-pointer border border-gray-300" value="#000000">
-                        <input type="text" id="custom-color-input" class="flex-1 h-10 px-3 border border-gray-300 rounded uppercase font-mono" value="#000000" placeholder="#000000">
+                        <input aria-label="Custom color picker" type="color" id="custom-color-picker" class="w-10 h-10 p-1 rounded cursor-pointer border border-gray-300" value="#000000">
+                        <input aria-label="Custom color hex code" type="text" id="custom-color-input" class="flex-1 h-10 px-3 border border-gray-300 rounded uppercase font-mono" value="#000000" placeholder="#000000">
                     </div>
                 </div>
 
@@ -156,12 +158,12 @@
 
                 <div>
                     <div class="flex justify-between items-center mb-2">
-                        <label class="text-sm font-medium text-gray-600">Size</label>
+                        <label class="text-sm font-medium text-gray-600" for="bulk-size-input">Size</label>
                         <span class="text-sm font-bold" id="bulk-size-label">120px</span>
                     </div>
                     <div class="flex items-center">
-                        <input type="number" id="bulk-size-input" value="120" min="16" max="512" class="w-20 h-10 px-2 border border-gray-300 rounded text-center">
-                        <md-slider id="bulk-size-slider" min="16" max="512" value="120" labeled class="flex-1"></md-slider>
+                        <input aria-label="Bulk icon size" type="number" id="bulk-size-input" value="120" min="16" max="512" class="w-20 h-10 px-2 border border-gray-300 rounded text-center">
+                        <md-slider aria-label="Adjust bulk icon size" id="bulk-size-slider" min="16" max="512" value="120" labeled class="flex-1"></md-slider>
                     </div>
                 </div>
 
@@ -171,8 +173,8 @@
                         <!-- Injected via JS -->
                     </div>
                     <div class="flex gap-2">
-                        <input type="color" id="bulk-custom-color-picker" class="w-10 h-10 p-1 rounded cursor-pointer border border-gray-300" value="#000000">
-                        <input type="text" id="bulk-custom-color-input" class="flex-1 h-10 px-3 border border-gray-300 rounded uppercase font-mono" value="#000000" placeholder="#000000">
+                        <input aria-label="Bulk custom color picker" type="color" id="bulk-custom-color-picker" class="w-10 h-10 p-1 rounded cursor-pointer border border-gray-300" value="#000000">
+                        <input aria-label="Bulk custom color hex code" type="text" id="bulk-custom-color-input" class="flex-1 h-10 px-3 border border-gray-300 rounded uppercase font-mono" value="#000000" placeholder="#000000">
                     </div>
                 </div>
             </div>
@@ -192,7 +194,7 @@
             <h3 class="font-bold text-sm mb-2">1. Include the CSS</h3>
             <div class="relative code-block bg-gray-100 p-3 rounded mb-4 font-mono text-xs overflow-x-auto text-gray-700 whitespace-nowrap">
                 &lt;link rel="stylesheet" href="icons.css"&gt;
-                <md-icon-button class="copy-css-snippet" data-copy-target="css-link">
+                <md-icon-button class="copy-css-snippet" data-copy-target="css-link" aria-label="Copy CSS link">
                     <md-icon>content_copy</md-icon>
                 </md-icon-button>
             </div>
@@ -200,12 +202,12 @@
             <h3 class="font-bold text-sm mb-2">2. Use in HTML</h3>
             <div class="relative code-block bg-gray-100 p-3 rounded mb-4 font-mono text-xs overflow-x-auto text-gray-700 whitespace-nowrap">
                 &lt;span class="icon icon-home"&gt;&lt;/span&gt;
-                <md-icon-button class="copy-css-snippet" data-copy-target="css-span">
+                <md-icon-button class="copy-css-snippet" data-copy-target="css-span" aria-label="Copy HTML snippet">
                     <md-icon>content_copy</md-icon>
                 </md-icon-button>
             </div>
             
-            <p class="text-sm text-gray-500 italic">
+            <p class="text-sm text-gray-700 italic">
                 Note: Icons will inherit the current text color via <code>currentColor</code>.
             </p>
         </div>

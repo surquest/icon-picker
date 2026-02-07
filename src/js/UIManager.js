@@ -57,12 +57,14 @@ export class UIManager {
             const strippedMarkup = IconUtils.getProcessedSVG(icon.markup, 48, '#555');
             const isSelected = selectedIcons.has(icon.name);
             
+            // We use tabindex="0" on the card to make it focusable (for the "Edit" action)
+            // The checkbox is natively focusable.
             return `
-                <md-elevated-card class="icon-card ${isSelected ? 'selected' : ''}" data-id="${icon.name}">
+                <md-elevated-card class="icon-card ${isSelected ? 'selected' : ''}" data-id="${icon.name}" tabindex="0" role="button" aria-label="Edit ${icon.name}">
                     <div class="selection-checkbox" data-action="toggle-select">
-                        <md-checkbox touch-target="wrapper" ${isSelected ? 'checked' : ''}></md-checkbox>
+                        <md-checkbox touch-target="wrapper" ${isSelected ? 'checked' : ''} aria-label="Select ${icon.name}"></md-checkbox>
                     </div>
-                    <div class="mb-4 pointer-events-none">
+                    <div class="mb-4 pointer-events-none" aria-hidden="true">
                         ${strippedMarkup}
                     </div>
                     <div class="text-sm font-medium text-center truncate w-full pointer-events-none">${icon.name}</div>
@@ -74,9 +76,11 @@ export class UIManager {
     renderBulkColors(colors, activeColor) {
         if (!this.elements.bulkColorPicker) return;
         this.elements.bulkColorPicker.innerHTML = colors.map(color => `
-            <div class="color-swatch ${color === activeColor ? 'active' : ''}" 
+            <button class="color-swatch ${color === activeColor ? 'active' : ''}" 
                  style="background: ${color}" 
-                 data-color="${color}"></div>
+                 data-color="${color}"
+                 aria-label="Select color ${color}"
+                 type="button"></button>
         `).join('');
     }
 
@@ -99,9 +103,11 @@ export class UIManager {
 
     renderColors(colors, activeColor) {
         this.elements.colorPicker.innerHTML = colors.map(color => `
-            <div class="color-swatch ${color === activeColor ? 'active' : ''}" 
+            <button class="color-swatch ${color === activeColor ? 'active' : ''}" 
                  style="background: ${color}" 
-                 data-color="${color}"></div>
+                 data-color="${color}"
+                 aria-label="Select color ${color}"
+                 type="button"></button>
         `).join('');
     }
 
@@ -146,7 +152,7 @@ export class UIManager {
     }
 
     showError(message) {
-        this.elements.grid.innerHTML = `<div class="col-span-full text-center py-12 text-gray-500">
+        this.elements.grid.innerHTML = `<div class="col-span-full text-center py-12 text-gray-700">
             <p class="text-red-500 font-bold mb-2">Error</p>
             <p class="text-sm">${message}</p>
         </div>`;

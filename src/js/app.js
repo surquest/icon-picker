@@ -62,6 +62,33 @@ export class App {
             }
         });
 
+        // Grid Keyboard Access
+        els.grid.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                const card = e.target.closest('.icon-card');
+                if (card) {
+                    e.preventDefault(); // Prevent scroll on space
+                    const id = card.dataset.id;
+                    
+                    // If focus is on checkbox, let it handle itself (or toggle manually if needed)
+                    // md-checkbox handles its own events usually. But if we focused the card...
+                    // The focus is on the card (tabindex=0).
+                    // If the user tabbed to the checkbox, e.target would be the checkbox.
+                    
+                    if (e.target.tagName.toLowerCase().includes('checkbox') || e.target.closest('.selection-checkbox')) {
+                        // Let native/component behavior work, or toggle manually if standard behavior fails
+                        // Usually custom elements handle Space/Enter.
+                        // If we preventDefault above, we might block it.
+                        // So only prevent default if we resolve the action.
+                        // But wait, if I focused the card, e.target is the card.
+                        this.toggleSelection(id);
+                    } else {
+                        this.selectIcon(id);
+                    }
+                }
+            }
+        });
+
         // Sidebar Close
         els.closeSidebarBtn.addEventListener('click', () => {
             this.ui.closeSidebar();
