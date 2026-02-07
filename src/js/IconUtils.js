@@ -16,8 +16,10 @@ export class IconUtils {
 
         svg.setAttribute('width', size);
         svg.setAttribute('height', size);
-        svg.setAttribute('fill', color);
-        svg.removeAttribute('style');
+        svg.setAttribute('fill', 'currentColor');
+        svg.setAttribute('style', `--icon-color:${color}; fill:var(--icon-color);`);
+        // svg.setAttribute('fill', color);
+        // svg.removeAttribute('style');
 
         // Tint all relevant child elements
         const elements = svg.querySelectorAll('path, circle, rect, polygon, ellipse');

@@ -1,5 +1,9 @@
 # Icon Picker
 
+**A static website for browsing, searching, and customizing SVG icons directly from the `icons` folder, using the `.metadata.json` file to source icon metadata.**
+
+> **Deployed Example:** [https://surquest.github.io/icon-picker/](https://surquest.github.io/icon-picker/)
+
 A modern, static web application for browsing, searching, and customizing a library of SVG icons.
 
 ## Features
@@ -9,7 +13,7 @@ A modern, static web application for browsing, searching, and customizing a libr
 - **Customization:**
   - **Color:** Choose from a palette of predefined colors.
   - **Size:** Adjust the icon size using an interactive slider.
-- **Export:** Download your customized icon as an **SVG** or **PNG** file.
+- **Export:** Download your customized icon as an **SVG** or **PNG** file as well as **CSS** stylesheet.
 - **Modern UI:** Built with Google's Material Web Components and Tailwind CSS.
 
 ## Getting Started

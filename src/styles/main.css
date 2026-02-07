@@ -24,6 +24,7 @@ body {
     flex-direction: column;
     height: 100vh;
     overflow: hidden;
+    color: #4D4D4D;
 }
 
 header {
@@ -191,4 +192,20 @@ header {
     right: 8px;
     z-index: 5;
     --md-icon-button-size: 36px;
+}
+
+/* CSS Tutorial Code Blocks */
+.code-block {
+    position: relative;
+    padding-right: 44px !important;
+    overflow: hidden;
+}
+
+.copy-css-snippet {
+    position: absolute;
+    right: 4px;
+    top: 50%;
+    transform: translateY(-50%);
+    --md-icon-button-icon-size: 18px;
+    --md-icon-button-size: 32px;
 }

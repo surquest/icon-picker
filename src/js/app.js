@@ -214,6 +214,17 @@ export class App {
             });
         }
 
+        // Bulk Download Dialog Cancel
+        const bulkDialog = els.bulkDialog;
+        if (bulkDialog) {
+            const cancelBtn = document.querySelector('#bulk-download-dialog md-text-button[value="cancel"]');
+            if (cancelBtn) {
+                cancelBtn.addEventListener('click', () => {
+                    bulkDialog.close();
+                });
+            }
+        }
+
         // --- CSS Download ---
         if (els.downloadCssBtn) {
             els.downloadCssBtn.addEventListener('click', () => {
@@ -231,6 +242,16 @@ export class App {
             });
         }
         
+        // CSS Tutorial Dialog Cancel
+        const cssDialog = els.cssDialog;
+        if (cssDialog) {
+            const cssCancelBtn = document.querySelector('#css-tutorial-dialog md-text-button[value="cancel"]');
+            if (cssCancelBtn) {
+                cssCancelBtn.addEventListener('click', () => {
+                    cssDialog.close();
+                });
+            }
+        }
         // Select All / Deselect All
         if (els.selectAllBtn) {
             els.selectAllBtn.addEventListener('click', () => {
@@ -242,6 +263,30 @@ export class App {
             els.deselectAllBtn.addEventListener('click', () => {
                 this.selectedIcons.clear();
                 this.updateAllSelectionVisuals();
+            });
+        }
+
+        // CSS Tutorial Dialog Copy Buttons
+        if (els.cssDialog) {
+            els.cssDialog.addEventListener('click', (e) => {
+                const btn = e.target.closest('.copy-css-snippet');
+                if (btn) {
+                    let text = '';
+                    if (btn.dataset.copyTarget === 'css-link') {
+                        text = '<link rel="stylesheet" href="icons.css">';
+                    } else if (btn.dataset.copyTarget === 'css-span') {
+                        text = '<span class="icon icon-home"></span>';
+                    }
+                    if (text) {
+                        navigator.clipboard.writeText(text);
+                        const icon = btn.querySelector('md-icon');
+                        if (icon) {
+                            const original = icon.textContent;
+                            icon.textContent = 'check';
+                            setTimeout(() => { icon.textContent = original; }, 1500);
+                        }
+                    }
+                }
             });
         }
     }
