@@ -209,3 +209,62 @@ header {
     --md-icon-button-icon-size: 18px;
     --md-icon-button-size: 32px;
 }
+
+/* --- Responsive Optimization --- */
+
+/* Notebook & Tablet (Portrait) - max-width: 1366px is common */
+@media (max-width: 1200px) {
+    .sidebar {
+        width: 350px; /* Compress sidebar slightly */
+    }
+}
+
+/* Mobile Devices */
+@media (max-width: 768px) {
+    /* Header layout */
+    header {
+        padding: 0 8px;
+    }
+    
+    /* Hide the app title on small screens to save space for search */
+    header h1 {
+        display: none;
+    }
+    
+    /* Icon grid responsive columns */
+    .icon-grid {
+        padding: 12px;
+        gap: 12px;
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    }
+    
+    /* Sidebar as Overlay */
+    /* When closed: still translated -100% or +100% */
+    .sidebar {
+        width: 100%; /* Full width */
+        border-left: none;
+        box-shadow: -2px 0 12px rgba(0,0,0,0.15);
+        overflow-y: auto; /* Allow scrolling inside sidebar */
+    }
+
+    /* When open: overlay on top of content */
+    .sidebar.open {
+        position: fixed; /* Use fixed to cover everything reliably */
+        top: 64px; /* Below header */
+        bottom: 0;
+        right: 0;
+        left: 0;
+        z-index: 50;
+    }
+    
+    /* Adjust preview container padding */
+    .preview-container {
+        padding: 16px;
+        min-height: 180px;
+    }
+    
+    /* Adjust cards */
+    .icon-card {
+        padding: 8px;
+    }
+}
