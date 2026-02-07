@@ -10,7 +10,7 @@ export class IconService {
             const getPath = (p) => CONFIG.BASE_PATH ? `${CONFIG.BASE_PATH}/${p}`.replace('//', '/') : p;
 
             // Fetch metadata relative to the project root
-            const metadataUrl = getPath('icons/.metadata.json');
+            const metadataUrl = getPath('icons/_metadata.json');
             console.log(`[IconService] Fetching metadata: ${metadataUrl}`);
             
             const response = await fetch(metadataUrl);

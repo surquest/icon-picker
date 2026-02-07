@@ -1,6 +1,6 @@
 # Icon Picker
 
-**A static website for browsing, searching, and customizing SVG icons directly from the `icons` folder, using the `.metadata.json` file to source icon metadata.**
+**A static website for browsing, searching, and customizing SVG icons directly from the `icons` folder, using the `_metadata.json` file to source icon metadata.**
 
 > **Deployed Example:** [https://surquest.github.io/icon-picker/](https://surquest.github.io/icon-picker/)
 
@@ -53,7 +53,7 @@ You need a way to serve static files. Some options include:
 
 ```
 src/
-├── icons/              # SVG files and .metadata.json
+├── icons/              # SVG files and _metadata.json
 ├── js/
 │   ├── app.js          # Main application logic
 │   ├── IconService.js  # Handles fetching icon data
@@ -69,7 +69,7 @@ src/
 To add new icons to the library:
 
 1.  Place the SVG file in the `src/icons/` directory.
-2.  Update `src/icons/.metadata.json` to include the new icon's details (name, path, tags).
+2.  Update `src/icons/_metadata.json` to include the new icon's details (name, path, tags).
 
 ## Technologies
 

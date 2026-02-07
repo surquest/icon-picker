@@ -28,7 +28,7 @@ export class App {
             this.setupEventListeners();
         } catch (error) {
             console.error(error);
-            this.ui.showError('Please ensure you are running this via a local server (e.g. Live Server) and that <code>icons/.metadata.json</code> exists.');
+            this.ui.showError('Please ensure you are running this via a local server (e.g. Live Server) and that <code>icons/_metadata.json</code> exists.');
             this.ui.hideLoading();
         }
     }
