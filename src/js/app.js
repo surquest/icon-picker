@@ -6,6 +6,7 @@ import { UIManager } from './UIManager.js';
 export class App {
     constructor() {
         this.icons = [];
+        this.filteredIcons = [];
         this.currentIcon = null;
         this.currentColor = COLORS[0];
         this.currentSize = 120;
@@ -22,6 +23,7 @@ export class App {
             
             // Load Data
             this.icons = await IconService.fetchLibrary();
+            this.filteredIcons = [...this.icons];
             this.ui.renderGrid(this.icons, this.selectedIcons); // Initial render
             this.ui.hideLoading();
 
@@ -39,10 +41,10 @@ export class App {
         // Search
         els.searchField.addEventListener('input', (e) => {
             const query = e.target.value.toLowerCase();
-            const filtered = this.icons.filter(i => 
+            this.filteredIcons = this.icons.filter(i => 
                 i.name.toLowerCase().includes(query) || (i.tags && i.tags.some(t => t.includes(query)))
             );
-            this.ui.renderGrid(filtered, this.selectedIcons);
+            this.ui.renderGrid(this.filteredIcons, this.selectedIcons);
         });
 
         // Grid Selection
@@ -282,7 +284,7 @@ export class App {
         // Select All / Deselect All
         if (els.selectAllBtn) {
             els.selectAllBtn.addEventListener('click', () => {
-                this.icons.forEach(i => this.selectedIcons.add(i.name));
+                this.filteredIcons.forEach(i => this.selectedIcons.add(i.name));
                 this.updateAllSelectionVisuals();
             });
         }
@@ -385,7 +387,7 @@ export class App {
         const icon = this.icons.find(i => i.name === id);
         if (icon) {
             this.currentIcon = icon;
-            this.ui.openSidebar(icon.name);
+            this.ui.openSidebar(icon.name, icon.tags || []);
             this.ui.updateSizeLabel(this.currentSize);
             this.refreshPreview();
         }

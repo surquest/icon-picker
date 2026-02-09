@@ -12,6 +12,7 @@ export class UIManager {
             sizeInput: document.getElementById('size-input'),
             sizeLabel: document.getElementById('size-label'),
             sidebarTitle: document.getElementById('sidebar-title'),
+            sidebarTags: document.getElementById('sidebar-tags'),
             loadingOverlay: document.getElementById('loading-overlay'),
             closeSidebarBtn: document.getElementById('close-sidebar'),
             
@@ -142,8 +143,13 @@ export class UIManager {
         if (this.elements.sizeInput) this.elements.sizeInput.value = size;
     }
 
-    openSidebar(iconName) {
+    openSidebar(iconName, tags = []) {
         this.elements.sidebarTitle.textContent = iconName;
+        
+        if (this.elements.sidebarTags) {
+            this.elements.sidebarTags.innerHTML = tags.map(tag => `<span class="tag">${tag}</span>`).join('');
+        }
+        
         this.elements.sidebar.classList.add('open');
     }
 
