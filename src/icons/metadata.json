@@ -1,37 +1,37 @@
 
 [{
 	"name": "home",
-	"path": "./icons/home.svg",
+	"path": "./icons/svg/home.svg",
 	"tags": ["home","house"]
 },
 {
 	"name": "edit",
-	"path": "./icons/edit.svg",
+	"path": "./icons/svg/edit.svg",
 	"tags": ["edit","modify"]
 },
 {
 	"name": "search",
-	"path": "./icons/search.svg",
+	"path": "./icons/svg/search.svg",
 	"tags": ["search","find","magnify"]
 },
 {
 	"name": "settings",
-	"path": "./icons/settings.svg",
+	"path": "./icons/svg/settings.svg",
 	"tags": ["settings","gear","preferences"]
 },
 {
 	"name": "user",
-	"path": "./icons/user.svg",
+	"path": "./icons/svg/user.svg",
 	"tags": ["user","person","account"]
 }, 
 {
 	"name": "cart",
-	"path": "./icons/cart.svg",
+	"path": "./icons/svg/cart.svg",
 	"tags": ["cart","shopping","basket"]
 },
 {
 	"name": "library",
-	"path": "./icons/library.svg",
+	"path": "./icons/svg/library.svg",
 	"tags": ["library","books","collection"]
 }
 ]
