@@ -173,13 +173,55 @@ export class App {
             }
         });
 
+        const copyCurrentSvg = async () => {
+            if (!this.currentIcon) return;
+            const processed = IconUtils.getProcessedSVG(
+                this.currentIcon.markup,
+                this.currentSize,
+                this.currentColor
+            );
+            try {
+                const blob = new Blob([processed], { type: 'image/svg+xml' });
+                const item = new ClipboardItem({ 'image/svg+xml': blob });
+                await navigator.clipboard.write([item]);
+                this.ui.setCopiedFeedback('copy-svg-btn');
+            } catch (err) {
+                console.error('Failed to copy SVG as image!', err);
+                // Fallback to text if blob fails (some browsers have strict ClipboardItem requirements)
+                try {
+                    await navigator.clipboard.writeText(processed);
+                    this.ui.setCopiedFeedback('copy-svg-btn');
+                } catch (textErr) {
+                    console.error('Text fallback failed too!', textErr);
+                }
+            }
+        };
+
+        // Copy SVG Button
+        if (els.copySvgBtn) {
+            els.copySvgBtn.addEventListener('click', copyCurrentSvg);
+        }
+
+        // Keyboard Shortcut: CTRL + C
+        document.addEventListener('keydown', (e) => {
+            // Check for Ctrl + C or Command + C (Mac)
+            if ((e.ctrlKey || e.metaKey) && e.key === 'c') {
+                // Only trigger if an icon is selected and the user isn't currently selecting text elsewhere
+                const selection = window.getSelection().toString();
+                if (!selection && this.currentIcon) {
+                    e.preventDefault();
+                    copyCurrentSvg();
+                }
+            }
+        });
+
         // Copy Code
         els.copyCodeBtn.addEventListener('click', async () => {
             const code = els.codePreview.textContent;
             if (code) {
                 try {
                     await navigator.clipboard.writeText(code);
-                    this.ui.setCopiedFeedback();
+                    this.ui.setCopiedFeedback('copy-code-btn');
                 } catch (err) {
                     console.error('Failed to copy!', err);
                 }

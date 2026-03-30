@@ -20,6 +20,7 @@ export class UIManager {
             customColorInput: document.getElementById('custom-color-input'),
 
             downloadSvgBtn: document.getElementById('download-svg'),
+            copySvgBtn: document.getElementById('copy-svg-btn'),
             downloadPngBtn: document.getElementById('download-png'),
             exportCanvas: document.getElementById('export-canvas'),
             codePreview: document.getElementById('code-preview'),
@@ -130,11 +131,14 @@ export class UIManager {
         this.elements.codePreview.textContent = processed;
     }
 
-    setCopiedFeedback() {
-        const icon = this.elements.copyCodeBtn.querySelector('md-icon');
+    setCopiedFeedback(buttonId = 'copy-code-btn') {
+        const btn = document.getElementById(buttonId);
+        if (!btn) return;
+        
+        const icon = btn.querySelector('md-icon');
         const original = icon.textContent;
         icon.textContent = 'check';
-        setTimeout(() => icon.textContent = 'content_copy', 2000);
+        setTimeout(() => icon.textContent = original, 2000);
     }
 
     updateSizeLabel(size) {
